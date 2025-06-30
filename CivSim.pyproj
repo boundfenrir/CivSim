@@ -22,6 +22,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CivSim.py" />
+    <Compile Include="simulation\hexgrid.py" />
+    <Compile Include="simulation\tectonics.py" />
+    <Compile Include="simulation\utils.py" />
+    <Compile Include="simulation\__init__.py" />
+    <Compile Include="visualization\render.py" />
+    <Compile Include="visualization\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="visualization\" />
+    <Folder Include="simulation\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
