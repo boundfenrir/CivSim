@@ -5,7 +5,7 @@ from visualization.render import render_grid, render_elevation
 
 def main():
     grid = HexGrid(radius=8)
-    plates = assign_plates(grid, num_plates=7)
+    plates = assign_plates(grid, num_plates=9, num_oceans=3)
     boundary_tiles = find_plate_boundaries(grid)
     classify_boundaries(grid,plates,boundary_tiles)
     print(f"Total tiles: {len(grid.all_tiles())}")

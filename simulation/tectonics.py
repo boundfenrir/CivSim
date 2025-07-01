@@ -23,7 +23,7 @@ class TectonicPlate:
         dy = math.sin(self.motion_angle) * self.motion_speed
         return dx,dy
 
-def assign_plates(grid: HexGrid, num_plates: int, seed: int = 42) -> Dict[int, TectonicPlate]:
+def assign_plates(grid: HexGrid, num_plates: int=9, num_oceans: int=3, seed: int = 42) -> Dict[int, TectonicPlate]:
     random.seed(seed)
     plates: Dict[int, TectonicPlate] = {}
 
@@ -35,7 +35,7 @@ def assign_plates(grid: HexGrid, num_plates: int, seed: int = 42) -> Dict[int, T
         plates[plate_id] = TectonicPlate(plate_id)
         plates[plate_id].add_tile(tile)
         
-    ocean_plate_ids = set(random.sample(range(num_plates),2))
+    ocean_plate_ids = set(random.sample(range(num_plates),num_oceans))
 
     frontier = deque(seed_tiles)
 
@@ -43,7 +43,7 @@ def assign_plates(grid: HexGrid, num_plates: int, seed: int = 42) -> Dict[int, T
         current_tile = frontier.popleft()
         current_plate_id = current_tile.plate_id
         if current_plate_id in ocean_plate_ids:
-            current_tile.elevation -= 3
+            current_tile.elevation -= 4
 
         for neighbor in grid.get_neighbors(current_tile):
             if neighbor.plate_id is None:
@@ -92,7 +92,7 @@ def classify_boundaries(grid: HexGrid, plates: Dict[int, TectonicPlate], boundar
             dot_b = vb[0] * -nx + vb[1] * -ny
 
             if dot_a > 0 and dot_b > 0:
-                tile.elevation += mag # Convergent
+                tile.elevation += mag*2 # Convergent
             elif dot_a < 0 and dot_b < 0:
                 tile.elevation -= mag # Divergent
             # else neutral/transform
