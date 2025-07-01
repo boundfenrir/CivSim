@@ -8,6 +8,7 @@ class HexTile:
     q: int
     r: int
     elevation: float = 0.0
+    moisture: float = 0.0
     biome: str = "unknown"
     plate_id: Optional[int] = None
     culture_id: Optional[int] = None

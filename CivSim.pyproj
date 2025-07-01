@@ -22,6 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CivSim.py" />
+    <Compile Include="simulation\biomes.py" />
     <Compile Include="simulation\hexgrid.py" />
     <Compile Include="simulation\tectonics.py" />
     <Compile Include="simulation\utils.py" />

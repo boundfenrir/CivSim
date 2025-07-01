@@ -4,8 +4,9 @@ import random
 import math
 from typing import Dict, List, Tuple
 from collections import deque
+from perlin_noise import PerlinNoise
 from simulation.hexgrid import HexGrid, HexTile
-from simulation.utils import polar_to_cartesian
+from simulation.utils import hex_to_pixel
 
 class TectonicPlate:
     def __init__(self, plate_id: int):
@@ -38,12 +39,16 @@ def assign_plates(grid: HexGrid, num_plates: int=9, num_oceans: int=3, seed: int
     ocean_plate_ids = set(random.sample(range(num_plates),num_oceans))
 
     frontier = deque(seed_tiles)
+    noise = PerlinNoise(octaves=4,seed=seed)
 
     while frontier:
         current_tile = frontier.popleft()
         current_plate_id = current_tile.plate_id
+        x, y = hex_to_pixel(current_tile.q,current_tile.r)
         if current_plate_id in ocean_plate_ids:
-            current_tile.elevation -= 4
+            current_tile.elevation = -3 + noise([x,y])
+        else:
+           current_tile.elevation = 1 + noise([x,y])
 
         for neighbor in grid.get_neighbors(current_tile):
             if neighbor.plate_id is None:
@@ -76,8 +81,8 @@ def classify_boundaries(grid: HexGrid, plates: Dict[int, TectonicPlate], boundar
             va = plate_a.motion_vector()
             vb = plate_b.motion_vector()
 
-            ax, ay = polar_to_cartesian(tile.q, tile.r)
-            bx, by = polar_to_cartesian(neighbor.q, neighbor.r)
+            ax, ay = hex_to_pixel(tile.q, tile.r)
+            bx, by = hex_to_pixel(neighbor.q, neighbor.r)
 
             # Direction vector from A to B
             dx = bx - ax
